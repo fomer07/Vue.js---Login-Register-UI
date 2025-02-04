@@ -14,12 +14,25 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "../utils/axios";
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
+const router = useRouter();
 
-const login = () => {
+const login = async () => {
   console.log("Login clicked:", email.value, password.value);
+  try {
+    const response = await axios.post("/auth/login", {
+      email: email.value,
+      password: password.value,
+    });
+    localStorage.setItem("token", response.data.token);
+    router.push("/dashboard"); // Redirect to dashboard after login
+  } catch (error) {
+    console.error("Login failed:", error);
+  }
 };
 </script>
 

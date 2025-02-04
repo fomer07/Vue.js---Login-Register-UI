@@ -15,13 +15,26 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "../utils/axios";
+import { useRouter } from "vue-router";
+import router from "@/router";
 
 const name = ref("");
 const email = ref("");
 const password = ref("");
 
-const register = () => {
+const register = async () => {
   console.log("Register clicked:", name.value, email.value, password.value);
+  try {
+    await axios.post("/auth/register", {
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    });
+    router.push("/login"); // Redirect to login after registration
+  } catch (error) {
+    console.error("Register failed:", error);
+  }
 };
 </script>
 
